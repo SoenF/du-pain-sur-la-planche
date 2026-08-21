@@ -276,8 +276,8 @@ ul{ margin: 0; padding: 0; }
 .btn-lg{ padding: 16px 34px; font-size: 1.05rem; }
 
 /* ---------------- Sections ---------------- */
-.section{ padding: 88px 0; }
-.section-tight{ padding: 60px 0; }
+.section{ padding-top: 88px; padding-bottom: 88px; }
+.section-tight{ padding-top: 60px; padding-bottom: 60px; }
 .section-alt{ background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .section-dark{ background: var(--ink); color: var(--cream); }
 .section-dark .eyebrow{ color: var(--gold); }
@@ -594,9 +594,9 @@ ul{ margin: 0; padding: 0; }
 }
 
 @media (max-width: 600px){
-  .container, .hero-inner{ padding: 0 20px; }
-  .section{ padding: 60px 0; }
+  .container, .hero-inner{ padding-left: 20px; padding-right: 20px; }
+  .section{ padding-top: 60px; padding-bottom: 60px; }
   .grid-2, .grid-3, .grid-4, .people, .people-4, .gallery, .steps{ grid-template-columns: 1fr; }
   .cta-band{ margin: 0 16px; padding: 40px 24px; }
-  .sponsor-block{ padding: 36px 0; }
+  .sponsor-block{ padding-top: 36px; padding-bottom: 36px; }
 }

@@ -594,7 +594,7 @@ ul{ margin: 0; padding: 0; }
 }
 
 @media (max-width: 600px){
-  .container, .hero-inner{ padding-left: 20px; padding-right: 20px; }
+  .container, .hero-inner{ padding-left: 28px; padding-right: 28px; }
   .section{ padding-top: 60px; padding-bottom: 60px; }
   .grid-2, .grid-3, .grid-4, .people, .people-4, .gallery, .steps{ grid-template-columns: 1fr; }
   .cta-band{ margin: 0 16px; padding: 40px 24px; }

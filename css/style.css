@@ -17,6 +17,11 @@
   --green:        #4b5d3a;
   --line:         #e2d6bd;
 
+  /* Rappel des teintes réelles de la future boutique (décors Egger) */
+  --oak:          #c99a5f; /* Chêne casella naturel — H1385 ST40 */
+  --soft-beige:   #ece1c8; /* Soft beige — U220 ST9 */
+  --soft-black:   #24262b; /* Soft black — U899 ST9 */
+
   --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-body: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
 
@@ -558,6 +563,126 @@ ul{ margin: 0; padding: 0; }
   border-radius: 10px;
   padding: 12px 16px;
   margin-top: 10px;
+}
+
+/* Rappel couleurs boutique (décors Egger de l'aménagement) */
+.stripe-accent{
+  height: 10px;
+  width: 72px;
+  border-radius: 6px;
+  margin-bottom: 22px;
+  background-image: repeating-linear-gradient(90deg, var(--soft-black) 0 12px, #fff 12px 24px);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.palette-block{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: center;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 32px;
+}
+.swatches{ display: flex; gap: 26px; flex-wrap: wrap; }
+.swatch{ text-align: center; }
+.swatch-color{
+  width: 62px; height: 62px;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  box-shadow: var(--shadow), 0 0 0 3px var(--paper), 0 0 0 4px var(--line);
+}
+.swatch strong{ display: block; font-size: 0.88rem; }
+.swatch span{ display: block; font-size: 0.78rem; color: var(--ink-soft); }
+.palette-caption{ color: var(--ink-soft); font-size: 0.92rem; max-width: 360px; margin: 0; }
+
+/* Partenaire boissons (Café Richard) */
+.partner-card{
+  display: flex;
+  gap: 26px;
+  align-items: flex-start;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 30px;
+  margin-bottom: 40px;
+}
+.partner-logo-placeholder{
+  width: 100px; height: 100px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  background: var(--cream-2);
+  border: 1px dashed var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  padding: 8px;
+}
+.partner-logo{
+  width: 100px; height: 100px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  object-fit: contain;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 10px;
+}
+.partner-posts{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 22px;
+}
+.partner-post{
+  aspect-ratio: 1/1;
+  border-radius: 14px;
+  background: var(--cream-2);
+  border: 1px dashed var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+.partner-post-img{
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+/* Carte de fidélité */
+.loyalty-band{
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: var(--soft-beige);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 26px 30px;
+}
+.loyalty-band .loyalty-pct{
+  font-family: var(--font-display);
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: var(--terracotta-2);
+  flex-shrink: 0;
+  line-height: 1;
+}
+.loyalty-band h4{ margin-bottom: 4px; }
+.loyalty-band p{ margin: 0; color: var(--ink-soft); font-size: 0.94rem; }
+
+@media (max-width: 600px){
+  .partner-card{ flex-direction: column; }
+  .loyalty-band{ flex-direction: column; text-align: center; }
 }
 
 /* Page header (non-home pages) */

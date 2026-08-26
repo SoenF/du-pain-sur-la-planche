@@ -79,13 +79,6 @@ ul{ margin: 0; padding: 0; }
   z-index: 200;
   transition: transform 0.3s ease;
 }
-.sidebar::before{
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 8px;
-  background-image: repeating-linear-gradient(90deg, var(--ink) 0 10px, #fff 10px 20px);
-}
 .sidebar-brand{
   display: flex;
   align-items: center;
@@ -160,14 +153,7 @@ ul{ margin: 0; padding: 0; }
   border-bottom: 1px solid var(--line);
   align-items: center;
   justify-content: space-between;
-  padding: 18px 16px 12px;
-}
-.topbar::before{
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 6px;
-  background-image: repeating-linear-gradient(90deg, var(--ink) 0 9px, #fff 9px 18px);
+  padding: 12px 16px;
 }
 .topbar-brand{ display: flex; align-items: center; gap: 10px; }
 .topbar-brand img{ width: 32px; height: 32px; }

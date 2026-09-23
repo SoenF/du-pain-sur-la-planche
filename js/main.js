@@ -47,4 +47,59 @@ document.addEventListener('DOMContentLoaded', function () {
       if (e.key === 'Escape') closeLightbox();
     });
   }
+
+  // ---- Planches d'arrière-plan : dérive douce au scroll ----------------
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.plank-chip'));
+
+  if (chips.length && !reduceMotion) {
+    var vh = window.innerHeight;
+    chips.forEach(function (chip, i) {
+      chip.dataset.phase = Math.random() * Math.PI * 2;
+      chip.dataset.speed = (0.35 + Math.random() * 0.4).toFixed(3);
+      chip.dataset.amp = (14 + Math.random() * 22).toFixed(1);
+      chip.dataset.spin = (Math.random() * 14 - 7).toFixed(1);
+    });
+
+    var ticking = false;
+    function renderChips() {
+      var scrollY = window.scrollY;
+      chips.forEach(function (chip) {
+        var rect = chip.parentElement.getBoundingClientRect();
+        var center = rect.top + rect.height / 2;
+        var dist = (center - vh / 2) / vh; // -ish .. +ish
+        var wind = Math.sin(scrollY * 0.002 + parseFloat(chip.dataset.phase)) * parseFloat(chip.dataset.amp);
+        var drift = -dist * parseFloat(chip.dataset.speed) * 140 + wind;
+        var rot = parseFloat(chip.dataset.spin) * Math.sin(scrollY * 0.001 + parseFloat(chip.dataset.phase));
+        chip.style.transform = 'translate3d(' + drift.toFixed(1) + 'px,' + (drift * 0.3).toFixed(1) + 'px,0) rotate(' + rot.toFixed(1) + 'deg)';
+      });
+      ticking = false;
+    }
+    function onScroll() {
+      if (!ticking) { window.requestAnimationFrame(renderChips); ticking = true; }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () { vh = window.innerHeight; renderChips(); });
+    renderChips();
+  }
+
+  // ---- Le sceau : s'appose une fois à l'entrée de la section histoire --
+  var stamp = document.querySelector('.seal-stamp');
+  if (stamp) {
+    if (reduceMotion) {
+      stamp.classList.add('is-stamped');
+    } else if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            stamp.classList.add('is-stamped');
+            io.disconnect();
+          }
+        });
+      }, { threshold: 0.5 });
+      io.observe(stamp);
+    } else {
+      stamp.classList.add('is-stamped');
+    }
+  }
 });

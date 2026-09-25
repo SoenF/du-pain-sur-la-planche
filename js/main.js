@@ -334,7 +334,7 @@ document.addEventListener('DOMContentLoaded', function () {
       for (var s = 0; s < want; s++) {
         var slotW = (lw - 32) / want;
         for (var t = 0; t < 60; t++) {
-          var w = (isSmall ? 46 : 56) + Math.round(rnd() * 20), L = 4 + Math.round(rnd() * (t > 30 ? 8 : (isSmall ? 40 : 90))), ph = w * 1.9;
+          var w = (isSmall ? 40 : 56) + Math.round(rnd() * (isSmall ? 10 : 20)), L = 4 + Math.round(rnd() * (t > 30 ? 8 : (isSmall ? 12 : 90))), ph = w * 1.9;
           var x = 16 + s * slotW + rnd() * Math.max(1, slotW - w);
           var cand = { x: x - 10, y: 0, r: x + w + 10, b: L + ph + 8 };
           if (covers.some(function (c) { return hit(cand, c); })) continue;

@@ -948,3 +948,4 @@ ul{ margin: 0; padding: 0; }
 .founder-duo img{ width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 .founder-duo h4{ margin-bottom: 2px; font-size: 1.3rem; }
 .founder-duo .role{ font-family: var(--font-label); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--oak-dark); font-weight: 600; }
+@media (max-width: 700px){ .hero{ padding-top: 124px; } .page-header{ padding-top: 96px; } }

@@ -223,14 +223,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var fxEls = [];
   function seeded(seed) { return function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
-  function coverRects(host) {
+  function coverRects(host, mx, my) {
+    var MX = mx == null ? 36 : mx, MY = my == null ? 14 : my;
     var hr = host.getBoundingClientRect(), out = [];
     function add(q, ex, ey) { if (q.width > 1 && q.height > 1) out.push({ x: q.left - hr.left - ex, y: q.top - hr.top - ey, r: q.right - hr.left + ex, b: q.bottom - hr.top + ey }); }
-    host.querySelectorAll('.plank, .cta-band, .loyalty-band, img, .btn, .step, .menu-row, .founder, .note, figcaption, .hero-tags span, .seal').forEach(function (e) { if (!e.closest('.fx-layer')) add(e.getBoundingClientRect(), 36, 14); });
+    host.querySelectorAll('.plank, .cta-band, .loyalty-band, img, .btn, .step, .menu-row, .founder, .note, figcaption, .hero-tags span, .seal').forEach(function (e) { if (!e.closest('.fx-layer')) add(e.getBoundingClientRect(), MX, MY); });
     host.querySelectorAll('h1, h2, h3, h4, p, .eyebrow, .concept-link, .scroll-cue, li, .role').forEach(function (e) {
       if (e.closest('.fx-layer')) return;
       var rg = document.createRange(); rg.selectNodeContents(e);
-      Array.prototype.forEach.call(rg.getClientRects(), function (q) { add(q, 36, 12); });
+      Array.prototype.forEach.call(rg.getClientRects(), function (q) { add(q, MX, MY); });
     });
     host.querySelectorAll('.concept').forEach(function (e) {
       var q = e.getBoundingClientRect();
@@ -307,6 +308,32 @@ document.addEventListener('DOMContentLoaded', function () {
         host.classList.add('fx-host');
         build(host, cfg.auto ? autoItems(host, idx++) : cfg.items, !!cfg.auto);
       });
+    });
+    // rangée de planches suspendues tout en haut du hero et des en-têtes
+    ['.hero', '.page-header'].forEach(function (sel) {
+      var host = document.querySelector(sel);
+      if (!host) return;
+      if (!host.classList.contains('fx-host')) { host.classList.add('fx-host'); }
+      var layer = host.querySelector('.fx-layer.fx-back');
+      if (!layer) { layer = document.createElement('div'); layer.className = 'fx-layer fx-back'; layer.setAttribute('aria-hidden', 'true'); host.appendChild(layer); }
+      var covers = coverRects(host, 12, 6), lw = layer.clientWidth, rnd = seeded(31 + Math.round(lw)), placed = [], made = 0, want = isSmall ? 4 : 9;
+      for (var t = 0; t < 260 && made < want; t++) {
+        var w = (isSmall ? 30 : 32) + Math.round(rnd() * 30), L = 6 + Math.round(rnd() * (isSmall ? 50 : 110)), ph = w * 1.9;
+        var x = 16 + rnd() * Math.max(1, lw - w - 32);
+        var cand = { x: x - 10, y: 0, r: x + w + 10, b: L + ph + 8 };
+        if (covers.some(function (c) { return hit(cand, c); })) continue;
+        if (placed.some(function (c) { return cand.x < c.r + 8 && cand.r > c.x - 8; })) continue;
+        var el = document.createElement('div');
+        el.className = 'fx fx-hang';
+        el.style.width = w + 'px'; el.style.left = x + 'px'; el.style.top = '0';
+        el.innerHTML = '<i class="fx-string" style="height:' + L + 'px"></i>' + shape('plank', rnd() > 0.35);
+        el.dataset.sway = (rnd() * 8 - 4).toFixed(1); el.dataset.rot = 0; el.dataset.drift = 0.3;
+        el.dataset.phase = (rnd() * 6.28).toFixed(2); el.dataset.period = 9; el.dataset.amp = 12;
+        layer.appendChild(el);
+        fxEls.push({ el: el, layer: layer, hang: true, host: host, auto: true });
+        placed.push(cand); made++;
+      }
+      if (built.indexOf(host) < 0) built.push(host);
     });
     // formes du hero (positions manuelles) : retire celles cachées par la photo ou le texte
     fxEls = fxEls.filter(function (f) {

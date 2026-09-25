@@ -323,22 +323,33 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!host.classList.contains('fx-host')) { host.classList.add('fx-host'); }
       var layer = host.querySelector('.fx-layer.fx-back');
       if (!layer) { layer = document.createElement('div'); layer.className = 'fx-layer fx-back'; layer.setAttribute('aria-hidden', 'true'); host.appendChild(layer); }
-      var covers = coverRects(host, 12, 6), lw = layer.clientWidth, rnd = seeded(31 + Math.round(lw)), placed = [], made = 0, want = isSmall ? 2 : 3;
-      for (var t = 0; t < 260 && made < want; t++) {
-        var w = (isSmall ? 50 : 66) + Math.round(rnd() * 22), L = 6 + Math.round(rnd() * (isSmall ? 40 : 90)), ph = w * 1.9;
-        var x = 16 + rnd() * Math.max(1, lw - w - 32);
-        var cand = { x: x - 10, y: 0, r: x + w + 10, b: L + ph + 8 };
-        if (covers.some(function (c) { return hit(cand, c); })) continue;
-        if (placed.some(function (c) { return cand.x < c.r + 8 && cand.r > c.x - 8; })) continue;
-        var el = document.createElement('div');
-        el.className = 'fx fx-hang';
-        el.style.width = w + 'px'; el.style.left = x + 'px'; el.style.top = '0';
-        el.innerHTML = '<i class="fx-string" style="height:' + L + 'px"></i>' + shape('plank', rnd() > 0.35);
-        el.dataset.sway = (rnd() * 8 - 4).toFixed(1); el.dataset.rot = 0; el.dataset.drift = 0.3;
-        el.dataset.phase = (rnd() * 6.28).toFixed(2); el.dataset.period = 9; el.dataset.amp = 12;
-        layer.appendChild(el);
-        fxEls.push({ el: el, layer: layer, hang: true, host: host, auto: true });
-        placed.push(cand); made++;
+      var covers = coverRects(host, 12, 6), lw = layer.clientWidth, rnd = seeded(31 + Math.round(lw)), placed = [], made = 0,
+          hr0 = host.getBoundingClientRect();
+      fxEls.forEach(function (o) {
+        if (o.host !== host) return;
+        var q = o.el.getBoundingClientRect();
+        placed.push({ x: q.left - hr0.left - 60, y: q.top - hr0.top - 60, r: q.right - hr0.left + 60, b: q.bottom - hr0.top + 60 });
+      });
+      var want = isSmall ? 2 : 4;
+      for (var s = 0; s < want; s++) {
+        var slotW = (lw - 32) / want;
+        for (var t = 0; t < 60; t++) {
+          var w = (isSmall ? 46 : 56) + Math.round(rnd() * 20), L = 4 + Math.round(rnd() * (t > 30 ? 8 : (isSmall ? 40 : 90))), ph = w * 1.9;
+          var x = 16 + s * slotW + rnd() * Math.max(1, slotW - w);
+          var cand = { x: x - 10, y: 0, r: x + w + 10, b: L + ph + 8 };
+          if (covers.some(function (c) { return hit(cand, c); })) continue;
+          if (placed.some(function (c) { return hit({ x: cand.x - 50, y: cand.y - 50, r: cand.r + 50, b: cand.b + 50 }, c); })) continue;
+          var el = document.createElement('div');
+          el.className = 'fx fx-hang';
+          el.style.width = w + 'px'; el.style.left = x + 'px'; el.style.top = '0';
+          el.innerHTML = '<i class="fx-string" style="height:' + L + 'px"></i>' + shape('plank', rnd() > 0.35);
+          el.dataset.sway = (rnd() * 8 - 4).toFixed(1); el.dataset.rot = 0; el.dataset.drift = 0.3;
+          el.dataset.phase = (rnd() * 6.28).toFixed(2); el.dataset.period = 9; el.dataset.amp = 12;
+          layer.appendChild(el);
+          fxEls.push({ el: el, layer: layer, hang: true, host: host, auto: true });
+          placed.push(cand); made++;
+          break;
+        }
       }
       if (built.indexOf(host) < 0) built.push(host);
     });
@@ -404,6 +415,20 @@ document.addEventListener('DOMContentLoaded', function () {
     var planks = Array.prototype.slice.call(passage.querySelectorAll('.passage-plank'));
     var pText = passage.querySelector('.passage-text'), pPhoto = passage.querySelector('.passage-photo');
     var ease = function (x) { return x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x); };
+    var LOAD = [
+      [['baguette', 6, 10, 62, -14], ['boule', 66, 8, 20, 6], ['croissant', 12, 44, 30, 8], ['baguette', 34, 58, 60, 9], ['tranche', 72, 44, 14, -8], ['pain-choc', 8, 80, 30, -6]],
+      [['boule', 8, 12, 46, -6], ['croissant', 14, 58, 62, 10]],
+      [['pain-choc', 8, 16, 64, -8], ['tranche', 40, 58, 40, 8]]
+    ];
+    planks.forEach(function (pl, n) {
+      (LOAD[n] || []).forEach(function (it) {
+        var d = document.createElement('div');
+        d.className = 'pb';
+        d.style.cssText = 'left:' + it[1] + '%;top:' + it[2] + '%;width:' + it[3] + '%;transform:rotate(' + it[4] + 'deg)';
+        d.innerHTML = shape(it[0], true);
+        pl.appendChild(d);
+      });
+    });
     var pTick = false;
     var renderPassage = function () {
       pTick = false;

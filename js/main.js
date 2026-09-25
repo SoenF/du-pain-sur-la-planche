@@ -68,16 +68,18 @@ document.addEventListener('DOMContentLoaded', function () {
     if (kind === 'plank') {
       var pl = [
         { d: 'M28 40V14c0-6 4-10 12-10s12 4 12 10v26', f: '#C9985F' },
-        { d: 'M14 40h52c6 0 10 4 10 10v86c0 6-4 10-10 10H14c-6 0-10-4-10-10V50c0-6 4-10 10-10Z', f: '#D9AC72' },
-        { d: 'M10 128v8c0 3 2 5 5 5h50c3 0 5-2 5-5v-8', f: '#B98A52', s: false, o: 0.8 },
-        circ(40, 17, 4.6, '#F7F0E1'),
-        { d: 'M18 58c3 20 3 44 0 66M30 54c3 22 3 50 0 74M50 54c-3 22-3 50 0 74M62 58c-3 20-3 44 0 66', f: null, w: 1.2, o: 0.5 },
-        { d: 'M14 46h52', f: null, w: 1.1, o: 0.35 },
-        { d: 'M20 116C16 100 30 82 44 82s24 10 22 26c-2 12-14 20-26 20-10 0-18-4-20-12Z', f: '#E3B26E' },
-        { d: 'M28 92c10 6 22 6 32 2M26 104c12 6 26 6 38 0', f: null, w: 1.5, o: 0.8 },
-        { d: 'M24 96c8-8 24-12 36-6-8-2-24 0-36 6Z', f: '#F6DFAE', s: false }
+        { d: 'M12 40h56c6 0 10 4 10 10v88c0 6-4 10-10 10H12c-6 0-10-4-10-10V50c0-6 4-10 10-10Z', f: '#D9AC72' },
+        circ(40, 17, 4.8, '#F7F0E1'),
+        { d: 'M14 52h52c3 0 5 2 5 5v76c0 3-2 5-5 5H14c-3 0-5-2-5-5V57c0-3 2-5 5-5Z', f: '#E4BC84', w: 1.3, o: 0.9 }
       ];
-      return render('0 0 80 152', pl);
+      var boardSvg = render('0 0 80 152', pl);
+      var bag = '<g transform="rotate(-58 40 98)">' +
+        (filled ? '<path d="M3.4 100c0-7 5-11 12-11h54c7 0 12 4 12 11s-5 11-12 11H15.4c-7 0-12-4-12-11Z" fill="' + GD + '" transform="translate(1.6,2)"/>' : '') +
+        '<path d="M2 98c0-7 5-11 12-11h54c7 0 12 4 12 11s-5 11-12 11H14c-7 0-12-4-12-11Z" fill="' + (filled ? G : 'none') + '" stroke="' + (filled ? LINE : OL) + '" stroke-width="2.2" stroke-linejoin="round"/>' +
+        '<path d="M16 93l9 10M30 92l9 11M44 92l9 11M58 93l9 10" fill="none" stroke="' + (filled ? LINE : OL) + '" stroke-width="2.4" stroke-linecap="round"/>' +
+        (filled ? '<path d="M10 92c20-4 44-4 66 0" fill="none" stroke="' + GL + '" stroke-width="2.4" stroke-linecap="round"/>' : '') + '</g>';
+      var crumbs = '<g fill="' + (filled ? GD : OL) + '"><circle cx="14" cy="132" r="1.6"/><circle cx="24" cy="138" r="1.2"/><circle cx="62" cy="64" r="1.5"/><circle cx="56" cy="58" r="1.1"/></g>';
+      return boardSvg.replace('</svg>', crumbs + bag + '</svg>');
     }
     if (kind === 'baguette') {
       var parts = [
@@ -217,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var SIZES = { baguette: 210, eclair: 150, boule: 96, tarte: 92, croissant: 130, macaron: 90, epi: 56, tranche: 76, 'pain-choc': 130, religieuse: 76, 'paris-brest': 116 };
   function autoItems(host, idx) {
     var h = host.offsetHeight, out = [];
-    var n = host.classList.contains('page-header') ? 3 : Math.max(2, Math.floor(h / 230));
+    var n = host.classList.contains('page-header') ? 2 : Math.max(2, Math.min(5, Math.floor(h / 300)));
     for (var i = 0; i < n; i++) {
       var kind = POOL[(i * 3 + idx * 2) % POOL.length];
       out.push([kind, 0, 0, SIZES[kind] * 1.1, (i % 2 ? -1 : 1) * (6 + (i * 7) % 14), 'back', 0.25 + (i % 3) * 0.1, i % 2]);
@@ -294,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var y = f.hang ? 0 : pad + rnd() * Math.max(1, lh - h - 2 * pad);
         var cand = { x: x - 14, y: y - 8, r: x + w + 14, b: y + h + 8 };
         if (covers.some(function (c) { return hit(cand, c); })) continue;
-        if (placed.some(function (c) { return hit({ x: cand.x - 26, y: cand.y - 26, r: cand.r + 26, b: cand.b + 26 }, c); })) continue;
+        if (placed.some(function (c) { return hit({ x: cand.x - 70, y: cand.y - 70, r: cand.r + 70, b: cand.b + 70 }, c); })) continue;
         f.el.style.left = x + 'px'; f.el.style.top = y + 'px';
         placed.push(cand); ok = true;
       }
@@ -321,9 +323,9 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!host.classList.contains('fx-host')) { host.classList.add('fx-host'); }
       var layer = host.querySelector('.fx-layer.fx-back');
       if (!layer) { layer = document.createElement('div'); layer.className = 'fx-layer fx-back'; layer.setAttribute('aria-hidden', 'true'); host.appendChild(layer); }
-      var covers = coverRects(host, 12, 6), lw = layer.clientWidth, rnd = seeded(31 + Math.round(lw)), placed = [], made = 0, want = isSmall ? 3 : 4;
+      var covers = coverRects(host, 12, 6), lw = layer.clientWidth, rnd = seeded(31 + Math.round(lw)), placed = [], made = 0, want = isSmall ? 2 : 3;
       for (var t = 0; t < 260 && made < want; t++) {
-        var w = (isSmall ? 40 : 50) + Math.round(rnd() * 24), L = 6 + Math.round(rnd() * (isSmall ? 40 : 90)), ph = w * 1.9;
+        var w = (isSmall ? 50 : 66) + Math.round(rnd() * 22), L = 6 + Math.round(rnd() * (isSmall ? 40 : 90)), ph = w * 1.9;
         var x = 16 + rnd() * Math.max(1, lw - w - 32);
         var cand = { x: x - 10, y: 0, r: x + w + 10, b: L + ph + 8 };
         if (covers.some(function (c) { return hit(cand, c); })) continue;

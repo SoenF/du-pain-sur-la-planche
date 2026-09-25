@@ -145,7 +145,8 @@ ul{ margin: 0; padding: 0; }
 }
 .seal img{
   width: 46%;
-  filter: invert(1) brightness(1.5);
+  filter: invert(1) contrast(4);
+  mix-blend-mode: screen;
 }
 .seal svg.seal-text{
   position: absolute;
@@ -930,4 +931,9 @@ ul{ margin: 0; padding: 0; }
   .passage{ height: 230svh; }
   .passage-plank{ width: 88%; height: 70svh; }
   .passage-plank.pp-2, .passage-plank.pp-3{ display: none; }
+}
+
+.sidebar-brand img, .topbar-brand img, .footer-brand img, .founder-placeholder .mascot-ph{ mix-blend-mode: multiply; }
+@media (max-width: 720px){
+  .grid-2, .grid-3, .grid-4, .steps{ grid-template-columns: 1fr; }
 }

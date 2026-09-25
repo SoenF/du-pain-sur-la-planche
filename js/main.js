@@ -66,13 +66,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     var i, p, q;
     if (kind === 'plank') {
-      return render('0 0 70 132', [
-        { d: 'M26 6h18c4 0 6 3 6 6v14c10 2 16 8 16 18v70c0 8-6 14-14 14H18c-8 0-14-6-14-14V44c0-10 6-16 16-18V12c0-3 2-6 6-6Z', f: '#D2A56E' },
-        { d: 'M12 46v70c0 4 3 8 8 8h30c5 0 8-4 8-8V46', f: '#E2BA84', s: false, o: 0.7 },
-        circ(35, 17, 4.6, '#F7F0E1'),
-        { d: 'M16 54c8 5 30 5 38 0M14 70c10 6 32 6 42 0M16 86c8 5 30 5 38 0M18 102c8 4 26 4 34 0', f: null, w: 1.3, o: 0.55 },
-        { d: 'M22 60c4 12 2 22 0 30', f: null, w: 1.1, o: 0.4 }
-      ]);
+      var pl = [
+        { d: 'M28 40V14c0-6 4-10 12-10s12 4 12 10v26', f: '#C9985F' },
+        { d: 'M14 40h52c6 0 10 4 10 10v86c0 6-4 10-10 10H14c-6 0-10-4-10-10V50c0-6 4-10 10-10Z', f: '#D9AC72' },
+        { d: 'M10 128v8c0 3 2 5 5 5h50c3 0 5-2 5-5v-8', f: '#B98A52', s: false, o: 0.8 },
+        circ(40, 17, 4.6, '#F7F0E1'),
+        { d: 'M18 58c3 20 3 44 0 66M30 54c3 22 3 50 0 74M50 54c-3 22-3 50 0 74M62 58c-3 20-3 44 0 66', f: null, w: 1.2, o: 0.5 },
+        { d: 'M14 46h52', f: null, w: 1.1, o: 0.35 },
+        { d: 'M20 116C16 100 30 82 44 82s24 10 22 26c-2 12-14 20-26 20-10 0-18-4-20-12Z', f: '#E3B26E' },
+        { d: 'M28 92c10 6 22 6 32 2M26 104c12 6 26 6 38 0', f: null, w: 1.5, o: 0.8 },
+        { d: 'M24 96c8-8 24-12 36-6-8-2-24 0-36 6Z', f: '#F6DFAE', s: false }
+      ];
+      return render('0 0 80 152', pl);
     }
     if (kind === 'baguette') {
       var parts = [
@@ -316,9 +321,9 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!host.classList.contains('fx-host')) { host.classList.add('fx-host'); }
       var layer = host.querySelector('.fx-layer.fx-back');
       if (!layer) { layer = document.createElement('div'); layer.className = 'fx-layer fx-back'; layer.setAttribute('aria-hidden', 'true'); host.appendChild(layer); }
-      var covers = coverRects(host, 12, 6), lw = layer.clientWidth, rnd = seeded(31 + Math.round(lw)), placed = [], made = 0, want = isSmall ? 4 : 9;
+      var covers = coverRects(host, 12, 6), lw = layer.clientWidth, rnd = seeded(31 + Math.round(lw)), placed = [], made = 0, want = isSmall ? 3 : 4;
       for (var t = 0; t < 260 && made < want; t++) {
-        var w = (isSmall ? 30 : 32) + Math.round(rnd() * 30), L = 6 + Math.round(rnd() * (isSmall ? 50 : 110)), ph = w * 1.9;
+        var w = (isSmall ? 40 : 50) + Math.round(rnd() * 24), L = 6 + Math.round(rnd() * (isSmall ? 40 : 90)), ph = w * 1.9;
         var x = 16 + rnd() * Math.max(1, lw - w - 32);
         var cand = { x: x - 10, y: 0, r: x + w + 10, b: L + ph + 8 };
         if (covers.some(function (c) { return hit(cand, c); })) continue;

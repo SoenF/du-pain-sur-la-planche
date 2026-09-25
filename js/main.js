@@ -416,9 +416,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var pText = passage.querySelector('.passage-text'), pPhoto = passage.querySelector('.passage-photo');
     var ease = function (x) { return x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x); };
     var LOAD = [
-      [['baguette', 6, 10, 62, -14], ['boule', 66, 8, 20, 6], ['croissant', 12, 44, 30, 8], ['baguette', 34, 58, 60, 9], ['tranche', 72, 44, 14, -8], ['pain-choc', 8, 80, 30, -6]],
-      [['boule', 8, 12, 46, -6], ['croissant', 14, 58, 62, 10]],
-      [['pain-choc', 8, 16, 64, -8], ['tranche', 40, 58, 40, 8]]
+      [['baguette', 5, 7, 52, -10], ['boule', 68, 6, 19, 6], ['croissant', 8, 37, 30, 6], ['tranche', 46, 36, 13, -6],
+       ['pain-choc', 64, 42, 28, -5], ['baguette', 12, 69, 58, 4], ['epi', 84, 68, 7, 14]]
     ];
     planks.forEach(function (pl, n) {
       (LOAD[n] || []).forEach(function (it) {
